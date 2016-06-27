@@ -179,6 +179,7 @@ module RocksDb :
     type t
 
     val open_db : Options.t -> string -> t
+    val open_db_with_wrapper : Options.t -> string -> string -> t
     val close : t -> unit
 
     val get_slice : t -> ReadOptions.t ->

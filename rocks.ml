@@ -95,6 +95,14 @@ module RocksDb = struct
         (Options.t @-> string @-> ptr string_opt @-> returning t) in
     fun options name -> with_err_pointer (inner options name)
 
+  let open_db_with_wrapper options name wrapper =
+    let inner =
+      foreign
+        wrapper
+        (Options.t @-> string @-> ptr string_opt @-> returning t)
+    in
+    with_err_pointer (inner options name)
+
   let close =
     let inner =
       foreign
@@ -116,7 +124,7 @@ module RocksDb = struct
     fun t wo key k_off k_len value v_off v_len ->
       with_err_pointer
         (inner
-           t wo 
+           t wo
            (ocaml_string_start key +@ k_off) k_len
            (ocaml_string_start value +@ v_off) v_len)
 
